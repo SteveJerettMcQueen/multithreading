@@ -3,7 +3,7 @@
 
 */
 
-#include "hill.h"
+#include "hill.hpp"
 #include <iostream>
 
 int hill(){

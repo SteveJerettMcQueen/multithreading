@@ -3,7 +3,7 @@
 
 */
 
-#include "pinnacle.h"
+#include "pinnacle.hpp"
 #include <iostream>
 
 int pinnacle(){

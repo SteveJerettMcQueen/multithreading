@@ -3,7 +3,7 @@
 
 */
 
-#include "fence.h"
+#include "fence.hpp"
 #include <iostream>
 
 int fence(){

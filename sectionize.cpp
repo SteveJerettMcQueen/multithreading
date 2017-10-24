@@ -24,10 +24,10 @@ void* sectionize_runnable(void *arg){
     /*
         Begin 3 new threads:
         Fence, Hill, & Pinnacle
-    
+        
     */
     
-
+    //Initialize threads using a vector
 
     std::cout << ">>> Sectionize Function Ended <<<" << std::endl;
 }

@@ -8,10 +8,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "threads.hpp"
-#include "sifter.hpp"
 #include "fence.hpp"
 #include "hill.hpp"
+#include "sifter.hpp"
 #include "pinnacle.hpp"
 
 int main(){
@@ -21,9 +20,13 @@ int main(){
     std::getline(std::cin, input);
     std::cout << "The Cipher Input You Entered is: ( " << input << " )" << std::endl;
 
-    // Thread ID
-    pthread_t SIFTER_THREAD_ID = threadconstants::SIFTER_THREAD;
-    
+    /*
+        Begin Sifter Thread
+    */
+
+    //Thread ID
+    pthread_t sifterThread;
+
     // Thread attributes
     pthread_attr_t sft_attr;
     std::cout << ((pthread_attr_init(&sft_attr)) ?
@@ -31,12 +34,12 @@ int main(){
         "Sifter Thread Attributes Initialize Sucessfully") << std::endl;
     
     // Create thread
-    std::cout << ((pthread_create(&SIFTER_THREAD_ID, &sft_attr, sifter, &input)) ?
+    std::cout << ((pthread_create(&sifterThread, &sft_attr, sifter, &input)) ?
         "Sifter Thread Created Unsuccessfully" :
         "Sifter Thread Created Sucessfully") << std::endl;
     
     //Suspend execution, wait
-    std::cout << ((pthread_join(SIFTER_THREAD_ID, NULL)) ? 
+    std::cout << ((pthread_join(sifterThread, NULL)) ? 
         "Sifter Thread Joined Unsuccessfully" :
         "Sifter Thread Joined Sucessfully") << std::endl;
     

@@ -9,6 +9,13 @@
 #include <vector>
 
 #include "sifter.hpp"
+#include "sectionize.hpp"
+
+
+std::string removeWhiteSpace(std::string &input){
+    
+    
+}
 
 bool isValidInput(std::string &input){
     
@@ -19,27 +26,45 @@ bool isValidInput(std::string &input){
 
 }
 
-//Function pointer
 void* sifter(void *arg){
     
     std::string *input_ptr = (std::string*) arg;
     std::string input = *input_ptr;
     
     // //Tokenize the input by removing whitespaces
-    // std::string tokInput;
+    std::string tokInput = input;
     
     // //Validate the input
-    // if(isValidInput(tokInput)) {
+    if(isValidInput(tokInput)) {
         
-    //     //Decode(sectionize) the input
+        /*
+            Begin Sectionize Thread
+        */
         
+        //Thread ID
+        pthread_t sectionizeThread;
+    
+        // Thread attributes
+        pthread_attr_t sect_attr;
+        std::cout << ((pthread_attr_init(&sect_attr)) ?
+            "Sectionize Thread Attributes Initialize Unsuccessfully" :
+            "Sectionize Thread Attributes Initialize Sucessfully") << std::endl;
         
-    // } else {
+        // Create thread
+        std::cout << ((pthread_create(&sectionizeThread, &sect_attr, sectionize, &tokInput)) ?
+            "Sectionize Thread Created Unsuccessfully" :
+            "Sectionize Thread Created Sucessfully") << std::endl;
         
-        
-        
-    // }
+        //Suspend execution, wait
+        std::cout << ((pthread_join(sectionizeThread, NULL)) ? 
+            "Sectionize Thread Joined Unsuccessfully" :
+            "Sectionize Thread Joined Sucessfully") << std::endl;
+            
+    } else {
+            
+        std::cout << "Invalid Input" << std::endl;
+            
+    }
     
     std::cout << ">>> Sifter Function Ended <<<" << std::endl;
-    pthread_exit(0);
 }

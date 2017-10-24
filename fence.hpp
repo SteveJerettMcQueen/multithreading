@@ -6,6 +6,7 @@
 #ifndef _Fence_H
 #define _Fence_H 
 
-int fence();
+//Function Pointer
+void *fence_runnable(void *arg);
 
 #endif 

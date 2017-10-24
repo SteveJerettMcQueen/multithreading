@@ -10,10 +10,7 @@
 #include <vector>
 #include <pthread.h>
 
-//Returns the input into a vector
-std::vector<std::vector<std::string> > sectionize(std::string &input);
-
 //Function Pointer
-void* sectionize(void *arg);
+void *sectionize_runnable(void *arg);
 
 #endif

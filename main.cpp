@@ -19,13 +19,13 @@ int main(){
     std::cout << "Please Enter The Cipher Input: ";
     std::getline(std::cin, input);
     std::cout << "The Cipher Input You Entered is: ( " << input << " )" << std::endl;
-
+   
     /*
         Begin Sifter Thread
     */
 
-    //Thread ID
-    pthread_t sifterThread;
+    // Thread ID
+    pthread_t sifter_thread;
 
     // Thread attributes
     pthread_attr_t sft_attr;
@@ -34,12 +34,12 @@ int main(){
         "Sifter Thread Attributes Initialize Sucessfully") << std::endl;
     
     // Create thread
-    std::cout << ((pthread_create(&sifterThread, &sft_attr, sifter, &input)) ?
+    std::cout << ((pthread_create(&sifter_thread, &sft_attr, sifter_runnable, &input)) ?
         "Sifter Thread Created Unsuccessfully" :
         "Sifter Thread Created Sucessfully") << std::endl;
     
-    //Suspend execution, wait
-    std::cout << ((pthread_join(sifterThread, NULL)) ? 
+    // Suspend execution, wait
+    std::cout << ((pthread_join(sifter_thread, NULL)) ? 
         "Sifter Thread Joined Unsuccessfully" :
         "Sifter Thread Joined Sucessfully") << std::endl;
     

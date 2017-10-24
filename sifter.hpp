@@ -11,15 +11,12 @@
 #include <pthread.h>
 
 //Remove whitespaces
-std::string removeWhiteSpace(std::string &input);
+std::string remove_white_space(std::string &input);
 
 //Returns true if input is valid
-bool isValidInput(std::string &input);
-
-//Returns the input
-std::string sifter(std::string &input);
+bool is_valid_input(std::string &input);
 
 //Function pointer
-void* sifter(void *arg);
+void* sifter_runnable(void *arg);
 
 #endif

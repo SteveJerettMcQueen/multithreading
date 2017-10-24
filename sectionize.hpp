@@ -10,7 +10,10 @@
 #include <vector>
 #include <pthread.h>
 
-//Function Pointer
+// Returns true if input is valid
+bool has_valid_asterisks(std::string &input);
+
+// Function pointer
 void *sectionize_runnable(void *arg);
 
 #endif

@@ -12,7 +12,6 @@
 #include "sifter.hpp"
 #include "sectionize.hpp"
 
-
 std::string remove_white_space(std::string &input){
     
     input.erase(
@@ -34,11 +33,8 @@ std::string remove_white_space(std::string &input){
     
 }
 
-bool is_valid_input(std::string &input){
-    
-	std::string regex_str = "(\\*{1,3}[A-Za-z0-9]+){1,3}";
-	std::regex rex(regex_str); 
-	
+bool is_valid_sifter_input(std::string &input){
+    std::regex rex("(\\*{1,3}[A-Za-z0-9]+){1,3}"); 
 	return (std::regex_match(input, rex));
 
 }
@@ -52,7 +48,7 @@ void* sifter_runnable(void *arg){
     std::string new_input = remove_white_space(input);
     
     // Validate the input
-    if(is_valid_input(new_input)) {
+    if(is_valid_sifter_input(new_input)) {
         
         /*
             Begin Sectionize Thread

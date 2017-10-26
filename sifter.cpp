@@ -75,7 +75,7 @@ void* sifter_runnable(void *arg){
             
     } else {
             
-        std::cout << "Invalid Input" << std::endl;
+        std::cout << "Invalid Sifter Input!" << std::endl;
             
     }
     

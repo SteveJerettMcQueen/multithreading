@@ -111,7 +111,7 @@ std::vector<std::vector<std::string> > vectorize(std::string &input){
     
 }
 
-bool has_valid_asterisks(std::string &input){
+bool has_valid_asterisks_expr(std::string &input){
     
     /*
         Valid Sequence Examples:
@@ -154,65 +154,55 @@ void* sectionize_runnable(void *arg){
     std::string *new_input_ptr = (std::string*) arg;
     std::string new_input = *new_input_ptr;
     
-    //Sectionize input into a 1 x 3, 2D_vector
-    std::vector<std::vector<std::string> > input_vector(1, std::vector<std::string>(3,""));
-    
-    /*
-        Add content to vector ....
-    */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-        Begin 3 new threads:
-        Fence, Hill, & Pinnacle
+    // Vectorize input into a 1 x 3, 2D_vector
+    if(has_valid_asterisks_expr(new_input)){
+        std::vector<std::vector<std::string>> input_vector(vectorize(new_input));
         
-    */
-    
-    static const int NUM_THREADS = 3;
-    
-    pthread_t fence_thread, hill_thread, pinn_thread;
-    pthread_t threads[NUM_THREADS] = {fence_thread, hill_thread, pinn_thread};
-    pthread_attr_t thread_attrs[NUM_THREADS];
-
-    void* (*thread_runnables[NUM_THREADS]) (void *arg) = {
-        fence_runnable,
-        hill_runnable,
-        pinnacle_runnable
-    };
-
-    //Initialize threads
-    // for(int i = 0; i < NUM_THREADS; ++i){
-    //     if(
-    //         pthread_attr_init(&thread_attrs[i]) == 0 &&
-    //         pthread_create(
-    //             &threads[i], 
-    //             &thread_attrs[i], 
-    //             thread_runnables[i], 
-    //             &input_vector) == 0 &&
-    //         pthread_join(threads[i], NULL) == 0){
-        
-    //         printf("Thread Attributes Initialized, Created, & Joined Sucessfully %d\n", i);
+        /*
+            Begin 3 new threads:
+            Fence, Hill, & Pinnacle
             
-    //     } else {
-            
-    //         printf("Thread Attributes Initialized, Created, & Joined Unsuccessfully %d\n", i);
-            
-    //     }
+        */
         
+        static const int NUM_THREADS = 3;
         
-    // }
+        pthread_t fence_thread, hill_thread, pinn_thread;
+        pthread_t threads[NUM_THREADS] = {fence_thread, hill_thread, pinn_thread};
+        pthread_attr_t thread_attrs[NUM_THREADS];
+    
+        void* (*thread_runnables[NUM_THREADS]) (void *arg) = {
+            fence_runnable,
+            hill_runnable,
+            pinnacle_runnable
+        };
+    
+        // Initialize threads
+        for(int i = 0; i < NUM_THREADS; ++i){
+            if(
+                pthread_attr_init(&thread_attrs[i]) == 0 &&
+                pthread_create(
+                    &threads[i], 
+                    &thread_attrs[i], 
+                    thread_runnables[i], 
+                    &input_vector) == 0 &&
+                pthread_join(threads[i], NULL) == 0){
+            
+                printf("Thread's Attributes Initialized, Created, & Joined Sucessfully %d\n", i);
+                
+            } else {
+                
+                printf("Thread's Attributes Initialized, Created, & Joined Unsuccessfully %d\n", i);
+                
+            }
+            
+            
+        }
 
+    } else {
+        
+        std::cout << "Invalid Input For Fence, Hill, or Pinnacle!" << std::endl;    
+        
+    }
+    
     std::cout << ">>> Sectionize Function Ended <<<" << std::endl;
 }

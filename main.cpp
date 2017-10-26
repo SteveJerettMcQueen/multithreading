@@ -20,6 +20,7 @@ int main(){
     std::cout << "Please Enter The Cipher Input: ";
     std::getline(std::cin, input);
     std::cout << "The Cipher Input You Entered is: ( " << input << " )" << std::endl;
+    vectorize(input);
     // std::cout << ((has_valid_asterisks(input)) ? "Yes" : "No") << std::endl;
    
     // /*

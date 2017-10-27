@@ -7,6 +7,6 @@
 #define _Pinnacle_H 
 
 //Function Pointer
-void *pinnacle_runnable(void *arg);
+void* pinnacle_runnable(void *arg);
 
 #endif 

@@ -7,6 +7,6 @@
 #define _Fence_H 
 
 //Function Pointer
-void *fence_runnable(void *arg);
+void* fence_runnable(void *arg);
 
 #endif 

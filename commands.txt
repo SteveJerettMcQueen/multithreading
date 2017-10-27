@@ -3,3 +3,5 @@ g++ *.cpp
 g++ -pthread *.cpp
 .a/a.out
 g++ -std=c++11 *.cpp
+
+            

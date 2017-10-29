@@ -4,4 +4,17 @@ g++ -pthread *.cpp
 .a/a.out
 g++ -std=c++11 *.cpp
 
+                    int current_index = i;
+                    int next_index = i + 1;
+                    
+                    char first_lett = std::toupper(lett_part[current_index]);
+                    char second_lett = std::toupper(lett_part[next_index]);
+                    
+                    std::cout 
+                        << "Read: (" << first_lett << " : " << alphabet_map[first_lett] 
+                        << " , " << second_lett << " : " << alphabet_map[second_lett]
+                        << ")" << std::endl;
+
+                    lett_part_vector[current_index] = alphabet_map[first_lett];
+                    lett_part_vector[next_index] = alphabet_map[second_lett];
             

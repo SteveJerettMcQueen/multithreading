@@ -33,13 +33,13 @@ std::string remove_white_space(std::string &input){
     
 }
 
-bool is_valid_sifter_input(std::string &input){
+bool valid_sifter_input(std::string &input){
     std::regex rex("(\\*{1,3}[A-Za-z0-9]+){1,3}"); 
 	return (std::regex_match(input, rex));
 
 }
 
-void* sifter_runnable(void *arg){
+void* sifter_runner(void *arg){
     
     std::string *input_ptr = (std::string*) arg;
     std::string input = *input_ptr;
@@ -48,7 +48,7 @@ void* sifter_runnable(void *arg){
     std::string new_input = remove_white_space(input);
     
     // Validate the input
-    if(is_valid_sifter_input(new_input)) {
+    if(valid_sifter_input(new_input)) {
         
         /*
             Begin Sectionize Thread
@@ -64,7 +64,7 @@ void* sifter_runnable(void *arg){
             "Sectionize Thread Attributes Initialize Sucessfully") << std::endl;
         
         // Create thread
-        std::cout << ((pthread_create(&sect_thread, &sect_attr, sectionize_runnable, &new_input)) ?
+        std::cout << ((pthread_create(&sect_thread, &sect_attr, sectionize_runner, &new_input)) ?
             "Sectionize Thread Created Unsuccessfully" :
             "Sectionize Thread Created Sucessfully") << std::endl;
         

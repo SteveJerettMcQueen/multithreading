@@ -10,17 +10,16 @@
 #include <string>
 #include <vector>
 
-// Store input into a vector
-std::vector<std::vector<std::string> > vectorize_hill(std::string &input);
+// Store input into a vector 2 x 1
+std::vector<std::vector<std::string> > hill_vectorize(std::string &input);
 
 // Valid Expression for hill decipher
-bool is_valid_hill_expr(std::string &input);
+bool valid_hill_expr(std::string &input);
 
-// Vaild inputs for hill decipher
-bool are_valid_input_parts(std::regex &rex, std::regex &rex2, 
-    std::string &input_part_1, std::string &input_part_2);
+// Hill algorithm for deciphering input
+void do_hill_decipher(std::string &input);
 
 // Function Pointer
-void* hill_runnable(void *arg);
+void* hill_runner(void *arg);
 
 #endif 

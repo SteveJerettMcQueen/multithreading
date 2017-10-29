@@ -16,15 +16,12 @@
 #include "pinnacle.hpp"
 #include "util.hpp"
 
-std::vector<std::vector<std::string> > vectorize_sections(std::string &input){
+std::vector<std::vector<std::string> > section_vectorize(std::string &input){
     
     std::regex asterisks_exp("\\*");
     std::regex letts_nums_exp("[A-Za-z0-9]+");
-    std::vector<int> indices(split_indices(
-        asterisks_exp, letts_nums_exp, 6, input));
-
-    std::vector<std::vector<std::string>> input_vector(
-        1, std::vector<std::string>(3,""));
+    std::vector<int> indices(split_indices(asterisks_exp, letts_nums_exp, 6, input));
+    std::vector<std::vector<std::string>> input_vector(1, std::vector<std::string>(3,""));
         
     for(int i = 0; i < indices.size(); i += 2){
         
@@ -76,7 +73,7 @@ std::vector<std::vector<std::string> > vectorize_sections(std::string &input){
     
 */
 
-bool has_valid_asterisks_expr(std::string &input){
+bool valid_asterisks_expr(std::string &input){
     
     std::string valid_exprs[6] = {
        "(\\*{1}[A-Za-z0-9]+{1})(\\*{2}[A-Za-z0-9]+{1})(\\*{3}[A-Za-z0-9]+{1})",
@@ -103,14 +100,14 @@ bool has_valid_asterisks_expr(std::string &input){
     Fence, Hill, & Pinnacle
     Vectorize input into a 1 x 3, 2d vector    
 */
-void* sectionize_runnable(void *arg){
+void* sectionize_runner(void *arg){
     
     std::string *new_input_ptr = (std::string*) arg;
     std::string new_input = *new_input_ptr;
     
-    if(has_valid_asterisks_expr(new_input)){
-        std::vector<std::vector<std::string>> input_vector(
-            vectorize_sections(new_input));
+    if(valid_asterisks_expr(new_input)){
+        std::vector<std::vector<std::string>> 
+            input_vector(section_vectorize(new_input));
         
         static const int NUM_THREADS = 3;
         
@@ -118,10 +115,10 @@ void* sectionize_runnable(void *arg){
         pthread_t threads[NUM_THREADS] = {fence_thread, hill_thread, pinn_thread};
         pthread_attr_t thread_attrs[NUM_THREADS];
     
-        void* (*thread_runnables[NUM_THREADS]) (void *arg) = {
-            fence_runnable,
-            hill_runnable,
-            pinnacle_runnable
+        void* (*thread_runners[NUM_THREADS]) (void *arg) = {
+            fence_runner,
+            hill_runner,
+            pinnacle_runner
         };
     
         // Initialize threads
@@ -131,7 +128,7 @@ void* sectionize_runnable(void *arg){
                 pthread_create(
                     &threads[i], 
                     &thread_attrs[i], 
-                    thread_runnables[i], 
+                    thread_runners[i], 
                     &input_vector) == 0 &&
                 pthread_join(threads[i], NULL) == 0){
             

@@ -9,7 +9,11 @@
 
 #include "pinnacle.hpp"
 
-void* pinnacle_runnable(void *arg){
+void do_pinn_decipher(std::string &input){
+    
+}
+
+void* pinnacle_runner(void *arg){
     
     std::vector<std::vector<std::string>> *input_vector_ptr = (std::vector<std::vector<std::string>>*) arg;
     std::vector<std::vector<std::string>> input_vector = *input_vector_ptr;

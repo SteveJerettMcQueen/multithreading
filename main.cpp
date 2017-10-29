@@ -20,7 +20,7 @@ int main(){
     std::cout << "Please Enter The Cipher Input: ";
     std::getline(std::cin, input);
     std::cout << "The Cipher Input You Entered is: ( " << input << " )" << std::endl;
-    std::cout << "Valid Hill Expression: " << is_valid_hill_expr(input) << std::endl;
+    std::cout << "Valid Hill Expression: " << valid_hill_expr(input) << std::endl;
 
     // // /*
     // //     Begin Sifter Thread
@@ -36,7 +36,7 @@ int main(){
     //     "Sifter Thread Attributes Initialize Sucessfully") << std::endl;
     
     // // Create thread
-    // std::cout << ((pthread_create(&sifter_thread, &sft_attr, sifter_runnable, &input)) ?
+    // std::cout << ((pthread_create(&sifter_thread, &sft_attr, sifter_runner, &input)) ?
     //     "Sifter Thread Created Unsuccessfully" :
     //     "Sifter Thread Created Sucessfully") << std::endl;
     
@@ -45,7 +45,7 @@ int main(){
     //     "Sifter Thread Joined Unsuccessfully" :
     //     "Sifter Thread Joined Sucessfully") << std::endl;
     
-    return 0;
+    // return 0;
     
 }
 

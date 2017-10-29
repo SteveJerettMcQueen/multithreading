@@ -9,7 +9,7 @@
 #include <string>
 
 // Pinnacle algorithm for deciphering input
-void do_pinn_decipher(std::string &input);
+std::string do_pinn_decipher(std::string &input);
 
 //Function Pointer
 void* pinnacle_runner(void *arg);

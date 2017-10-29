@@ -11,32 +11,11 @@
 
 #include "sifter.hpp"
 #include "sectionize.hpp"
-
-std::string remove_white_space(std::string &input){
-    
-    input.erase(
-        std::remove_if(
-            input.begin(), 
-            input.end(), 
-            std::bind(
-                std::isspace<char>, 
-                std::placeholders::_1, 
-                std::locale::classic() 
-            )
-        ), 
-        
-        input.end()
-
-        );
-        
-    return input;
-    
-}
+#include "util.hpp"
 
 bool valid_sifter_input(std::string &input){
     std::regex rex("(\\*{1,3}[A-Za-z0-9]+){1,3}"); 
 	return (std::regex_match(input, rex));
-
 }
 
 void* sifter_runner(void *arg){
@@ -50,29 +29,26 @@ void* sifter_runner(void *arg){
     // Validate the input
     if(valid_sifter_input(new_input)) {
         
-        /*
-            Begin Sectionize Thread
-        */
+        struct sec_runner_struct arg_struct;
+        
+        arg_struct.input = new_input;
         
         // Thread ID
         pthread_t sect_thread;
     
         // Thread attributes
         pthread_attr_t sect_attr;
-        std::cout << ((pthread_attr_init(&sect_attr)) ?
-            "Sectionize Thread Attributes Initialize Unsuccessfully" :
-            "Sectionize Thread Attributes Initialize Sucessfully") << std::endl;
+        pthread_attr_init(&sect_attr);
         
         // Create thread
-        std::cout << ((pthread_create(&sect_thread, &sect_attr, sectionize_runner, &new_input)) ?
-            "Sectionize Thread Created Unsuccessfully" :
-            "Sectionize Thread Created Sucessfully") << std::endl;
+        pthread_create(&sect_thread, &sect_attr, sectionize_runner, &arg_struct);
         
         // Suspend execution, wait
-        std::cout << ((pthread_join(sect_thread, NULL)) ? 
-            "Sectionize Thread Joined Unsuccessfully" :
-            "Sectionize Thread Joined Sucessfully") << std::endl;
-            
+        pthread_join(sect_thread, NULL);
+        
+        // Return status
+        std::cout << "Status: " << arg_struct.status << std::endl;
+        
     } else {
             
         std::cout << "Invalid Sifter Input!" << std::endl;

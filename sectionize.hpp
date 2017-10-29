@@ -10,7 +10,6 @@
 #include <vector>
 #include <pthread.h>
 
-
 // Store input into a vector 1 x 3
 std::vector<std::vector<std::string> > section_vectorize(std::string &input);
 

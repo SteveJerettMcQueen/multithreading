@@ -10,6 +10,7 @@
 #include <vector>
 
 #include <math.h>
+#include <pthread.h>
 
 #include "hill.hpp"
 #include "util.hpp"
@@ -32,11 +33,11 @@ std::vector<std::vector<std::string> > hill_vectorize(std::string &input){
         input_vector[0][0] = input.substr(start, split_index + 1);        
         input_vector[0][1] = input.substr(split_index + 1);        
         
-        for(int i = 0; i < input_vector.size(); i++){
-            std::cout << "Input Parts: " 
-                << input_vector[i][0] << ", "
-                << input_vector[i][1] << std::endl;
-        }
+        // for(int i = 0; i < input_vector.size(); i++){
+        //     std::cout << "Input Parts: " 
+        //         << input_vector[i][0] << ", "
+        //         << input_vector[i][1] << std::endl;
+        // }
         
     } else {
                         
@@ -45,11 +46,11 @@ std::vector<std::vector<std::string> > hill_vectorize(std::string &input){
         input_vector[0][1] = input.substr(start, split_index);        
         input_vector[0][0] = input.substr(split_index);        
         
-        for(int i = 0; i < input_vector.size(); i++){
-            std::cout << "Input Parts: " 
-                << input_vector[i][0] << ", "
-                << input_vector[i][1] << std::endl;
-        }
+        // for(int i = 0; i < input_vector.size(); i++){
+        //     std::cout << "Input Parts: " 
+        //         << input_vector[i][0] << ", "
+        //         << input_vector[i][1] << std::endl;
+        // }
                         
     }    
     
@@ -64,59 +65,62 @@ std::vector<std::vector<std::string> > hill_vectorize(std::string &input){
 */
 bool valid_hill_expr(std::string &input){
 
-    // Store valid regular expressions
-    std::string valid_exprs[2]= {
+    const int VALID_EXPRS = 2;
+    std::string valid_exprs[VALID_EXPRS]= {
         "([A-Za-z]+)([0-9]+)",
         "([0-9]+)([A-Za-z]+)"
     };
     
     bool has_match = false;
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < VALID_EXPRS; i++){
         std::regex rex(valid_exprs[i]);
-        if(std::regex_match(input, rex)){
-            do_hill_decipher(input);//Move to runner
+        if(std::regex_match(input, rex))
             has_match = true;
-        }
-    }    
+    }
     
     return has_match;
-        
+
 }
 
-void do_hill_decipher(std::string &input){
+std::string do_hill_decipher(std::string &input){
     
-    std::vector<std::vector<std::string>> input_vector(hill_vectorize(input));
+    std::vector<std::vector<std::string>> 
+        hill_input_vec(hill_vectorize(input));
        
     int char_reads = 2;
-    std::string lett_part = input_vector[0][0];
-    std::string num_part = input_vector[0][1];
+    std::string lett_part = hill_input_vec[0][0];
+    std::string num_part = hill_input_vec[0][1];
     
     if(valid_input_parts(lett_part, num_part, char_reads)){
-        
-        std::string message = read_input(lett_part, num_part, char_reads);
-        std::cout << "Message: " << message << std::endl;
-    
-    } else {
-            
-        std::cout << "Invalid input parts!!" << std::endl;
-            
+        return read_input(lett_part, num_part, char_reads);
     }
-                
+    
+    
+    return "Invalid input for Hill decipher!";
+
 } 
 
 void* hill_runner(void *arg){
     
-    std::vector<std::vector<std::string>> *input_vector_ptr = (std::vector<std::vector<std::string>>*) arg;
-    std::vector<std::vector<std::string>> input_vector = *input_vector_ptr;
+    struct thread_funcs_runner_struct *arg_struct =
+        (struct thread_funcs_runner_struct*) arg;
     
+    std::vector<std::vector<std::string>> input_vector = 
+        arg_struct->input_vector;
+    
+    std::string message;
     for(int i = 0; i < input_vector.size(); i++){
-        std::cout << "Input Parts: " 
-                << input_vector[i][0] << ", "
-                << input_vector[i][1] << ", "
-                << input_vector[i][2] << std::endl;
-        
+        for(int j = 0; j < input_vector[0].size(); j++){
+            std::string input = input_vector[i][j];
+            if(valid_hill_expr(input)){
+                std::string mess = do_hill_decipher(input);
+                message.append(mess + " , ");
+            }
+        }
     }
-
+    
+    arg_struct->final_message = message;
+    
     std::cout << ">>> Hill Function Ended <<<" << std::endl;
-    return 0;
+    pthread_exit(0);
 }

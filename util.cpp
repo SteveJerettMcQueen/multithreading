@@ -4,6 +4,7 @@
 */
 
 #include <iostream>
+#include <map>
 #include <regex>
 #include <string>
 #include <vector>
@@ -57,7 +58,7 @@ std::string read_input(std::string &input, std::string &input2, int char_reads){
     std::string num_part = input2;
                         
     // Get first "n" digits from number part
-    num_part = num_part.substr(0, pow(char_reads,2));
+    num_part = num_part.substr(0, pow(char_reads, 2));
        
     // Convert number part into a n x n matrix
     std::vector<std::vector<int>> num_part_vector(char_reads, std::vector<int>(char_reads,0));
@@ -120,7 +121,6 @@ std::string remove_white_space(std::string &input){
     return input;
     
 }
-
 
 std::vector<int> split_indices(std::regex &rex, std::regex &rex2, int max_splits, std::string &input){
     
@@ -251,3 +251,46 @@ bool valid_input_parts(std::string &p1, std::string &p2, int char_reads){
     return (valid_p1 && valid_p2);
     
 }
+
+std::vector<std::vector<std::string> > vectorize(std::string &input){
+
+    std::regex letts_exp("[A-Za-z]");
+    std::regex num_exp("[0-9]");
+    std::vector<int> indices(split_indices(letts_exp, num_exp, 1, input));
+    std::vector<std::vector<std::string>> input_vector(1, std::vector<std::string>(2,""));
+                    
+    int start = 0;
+    int split_index = indices[0];
+                    
+    // Test if first character in string is a digit or letter   
+    // If letter, then split index + 1
+    std::string str(1,input[0]);
+    if(std::regex_match(str, letts_exp)){
+                        
+        input_vector[0][0] = input.substr(start, split_index + 1);        
+        input_vector[0][1] = input.substr(split_index + 1);        
+        
+        // for(int i = 0; i < input_vector.size(); i++){
+        //     std::cout << "Input Parts: " 
+        //         << input_vector[i][0] << ", "
+        //         << input_vector[i][1] << std::endl;
+        // }
+        
+    } else {
+                        
+        // Swap input parts so that the letter part is first
+        // and number part is second in the input vector
+        input_vector[0][1] = input.substr(start, split_index);        
+        input_vector[0][0] = input.substr(split_index);        
+        
+        // for(int i = 0; i < input_vector.size(); i++){
+        //     std::cout << "Input Parts: " 
+        //         << input_vector[i][0] << ", "
+        //         << input_vector[i][1] << std::endl;
+        // }
+                        
+    }    
+    
+    return input_vector;
+}
+    

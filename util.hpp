@@ -38,4 +38,7 @@ std::vector<int> split_indices(std::regex &rex, std::regex &rex2, int max_splits
 // Return true if input follows a certain divisibility
 bool valid_input_parts(std::string &p1, std::string &p2, int char_reads);
 
+// Vectorize input into a standard 1 x 2 matrix
+std::vector<std::vector<std::string> > vectorize(std::string &input);
+
 #endif

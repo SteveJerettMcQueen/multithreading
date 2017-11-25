@@ -1,1 +1,1 @@
-# multithreading
+# posix threads

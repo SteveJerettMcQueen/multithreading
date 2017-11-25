@@ -10,13 +10,13 @@
 #include <vector>
 #include <pthread.h>
 
-//Remove whitespaces
+// Remove whitespaces
 std::string remove_white_space(std::string &input);
 
-//Returns true if input is valid
+// Returns true if input is valid
 bool valid_sifter_input(std::string &input);
 
-//Function pointer
+// Function pointer
 void* sifter_runner(void *arg);
 
 #endif

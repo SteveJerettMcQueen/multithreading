@@ -14,6 +14,23 @@
 #include "fence.hpp"
 #include "util.hpp"
 
+std::string fence_modify_str(std::string &str, int n){
+    
+    int diff = n - (str.size() % n);
+    int new_len = str.size() + diff;
+
+    if(str.size() % n != 0) {
+        
+        // Modify string to make divisible by n
+        
+    } else {
+        
+        return str;
+    }
+
+    
+}
+
 std::vector<std::vector<std::string> > rearrange(std::map<int, int> &column_map, 
     std::vector<std::vector<std::string>> &input_matrix){
     
@@ -38,6 +55,10 @@ std::vector<std::vector<std::string> > rearrange(std::map<int, int> &column_map,
     3485291qwerqQWEFewqihf
     123456789wifhuewAWEfeieiwf
     2395ifeQEFeijf
+    
+    Bug: For the case of 3 digits with 2 repeating digits 
+         followed by any number of letters the function accepts 
+         the expression when it is invalid.
 */
 bool valid_fence_expr(std::string &input){
         
@@ -69,9 +90,7 @@ std::string do_fence_decipher(std::string &input){
     std::vector<std::vector<std::string>> 
         fence_input_vec(vectorize(input));
     
-    // std::string lett_part = "ttnaAptMTSUOaodwcoIXknlypETZ";
-    // std::string num_part = "4312567";
-    
+    std::string message;
     std::string lett_part = fence_input_vec[0][0];
     std::string num_part = fence_input_vec[0][1];
 
@@ -82,42 +101,50 @@ std::string do_fence_decipher(std::string &input){
         column_map.insert(std::pair<int, int>(i, std::stoi(digit) - 1));
     }
 
+    // Modify length of letter string for divisibility
+    // lett_part = fence_modify_str(lett_part, num_part.size());
+
     // Get length of input & digit string
     int lett_len = lett_part.size();
     int digit_len = num_part.size();
     
-    // Validate the length of the letters with the number of digits
+    if(lett_len % digit_len == 0){
+        int partition = lett_len / digit_len;
     
-    int partition = lett_len / digit_len;
+        // Variable to read input by
+        int read_by = partition;
     
-    // Variable to read input by
-    int read_by = partition;
-
-    //Store input into matrix
-    std::vector<std::vector<std::string>> 
-        input_matrix(partition, std::vector<std::string>(digit_len, " "));
+        //Store input into matrix
+        std::vector<std::vector<std::string>> 
+            input_matrix(partition, std::vector<std::string>(digit_len, " "));
+            
+        for(int i = 0; i < partition; i++){
+            for(int j = 0; j < digit_len; j++){
+                std::string letter(1, lett_part[i + (j * read_by)]);
+                input_matrix[i][j] = letter;
+            }
+        }
         
-    for(int i = 0; i < partition; i++){
-        for(int j = 0; j < digit_len; j++){
-            std::string letter(1, lett_part[i + (j * read_by)]);
-            input_matrix[i][j] = letter;
+        // Rearrange input
+        std::vector<std::vector<std::string>> 
+            result_matrix(rearrange(column_map, input_matrix));
+        
+        // Create message
+        for(int i = 0; i < partition; i++){
+            for(int j = 0; j < digit_len; j++){
+                std::string letter = result_matrix[i][j];
+                message.append(letter);
+            }
         }
+        
+        return message;
+        
+    } else {
+        
+        message.append("Invalid Input Parts For Fence: Non-divisible!");
+        return message;
+    
     }
-    
-    // Rearrange input
-    std::vector<std::vector<std::string>> 
-        result_matrix(rearrange(column_map, input_matrix));
-    
-    //Create message
-    for(int i = 0; i < partition; i++){
-        std::cout << "R " << i << ": "; 
-        for(int j = 0; j < digit_len; j++){
-            std::cout << result_matrix[i][j] << " , ";
-        }
-        std::cout << std::endl;
-    }
-    
-    return input;
     
 }
 
@@ -129,19 +156,19 @@ void* fence_runner(void *arg){
     std::vector<std::vector<std::string>> input_vector = 
         arg_struct->input_vector;
 
-    std::string message;
+    std::string message = "Fence ->\n";
     for(int i = 0; i < input_vector.size(); i++){
         for(int j = 0; j < input_vector[0].size(); j++){
             std::string input = input_vector[i][j];
             if(valid_fence_expr(input)){
-                message.append(do_fence_decipher(input) + " , ");
+                message.append(do_fence_decipher(input) + "\n");
+            } else {
+                message.append("Invalid Fence Expression!\n");
             }
         }
     }
     
     arg_struct->final_message = message;
 
-    
-    std::cout << ">>> Fence Function Ended <<<" << std::endl;
     pthread_exit(0);
 }

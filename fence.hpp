@@ -11,6 +11,9 @@
 #include <string>
 #include <vector>
 
+// Modifies the letter string for divisibility
+std::string fence_modify_str(std::string &str, int n);
+
 // Rearranges input matrix 
 std::vector<std::vector<std::string> > rearrange(std::map<int, int> &column_map,
     std::vector<std::vector<std::string>> &input_matrix);

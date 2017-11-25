@@ -55,7 +55,7 @@ std::string do_hill_decipher(std::string &input){
         
     } else {
         
-        return "Invalid input for Hill decipher!";
+        return "Invalid Input Parts For Hill Decipher!";
         
     }
 } 
@@ -68,18 +68,19 @@ void* hill_runner(void *arg){
     std::vector<std::vector<std::string>> input_vector = 
         arg_struct->input_vector;
     
-    std::string message;
+    std::string message = "Hill ->\n";
     for(int i = 0; i < input_vector.size(); i++){
         for(int j = 0; j < input_vector[0].size(); j++){
             std::string input = input_vector[i][j];
             if(valid_hill_expr(input)){
-                message.append(do_hill_decipher(input) + " , ");
+                message.append(do_hill_decipher(input) + "\n");
+            } else {
+                message.append("Invalid Hill Expression!\n");
             }
         }
     }
     
     arg_struct->final_message = message;
     
-    std::cout << ">>> Hill Function Ended <<<" << std::endl;
     pthread_exit(0);
 }

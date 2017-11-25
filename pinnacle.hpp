@@ -11,7 +11,7 @@
 // Pinnacle algorithm for deciphering input
 std::string do_pinn_decipher(std::string &input);
 
-//Function Pointer
+// Function Pointer
 void* pinnacle_runner(void *arg);
 
 #endif 

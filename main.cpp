@@ -1,18 +1,13 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <cstring>
 
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "fence.hpp"
-#include "hill.hpp"
 #include "sifter.hpp"
-#include "pinnacle.hpp"
-#include "sectionize.hpp"
 
 int main(){
     
@@ -30,21 +25,19 @@ int main(){
         // Launch thread    
         } else {
             
-            // // Thread ID
-            // pthread_t sifter_thread;
+            // Thread ID
+            pthread_t sifter_thread;
         
-            // // Thread attributes
-            // pthread_attr_t sft_attr;
-            // pthread_attr_init(&sft_attr);
+            // Thread attributes
+            pthread_attr_t sft_attr;
+            pthread_attr_init(&sft_attr);
             
-            // // Create thread
-            // pthread_create(&sifter_thread, &sft_attr, sifter_runner, &input);
+            // Create thread
+            pthread_create(&sifter_thread, &sft_attr, sifter_runner, &input);
             
-            // // Suspend wait during execution
-            // pthread_join(sifter_thread, NULL);
-        
-            std::cout<< do_fence_decipher(input) << std::endl;
-        
+            // Suspend wait during execution
+            pthread_join(sifter_thread, NULL);
+            
         }
         
     } 

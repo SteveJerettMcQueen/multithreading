@@ -8,7 +8,6 @@
 #include <regex>
 #include <string>
 #include <vector>
-
 #include <math.h>
 
 #include "util.hpp"
@@ -26,7 +25,6 @@ std::vector<std::vector<int> > multiply_matrices(std::vector<std::vector<int>> &
         for(int i = 0; i < a_row_len; i++)
             for(int j = 0; j < b_col_len; j++)
                 for(int k = 0; k < a_col_len; k++)
-                    // std::cout << "( " << a[i][k] << " x " << b[k][j] << " = " << a[i][k] * b[k][j] << " ) ";
                     c[i][j] += a[i][k] * b[k][j];
         
         // Modulo the result
@@ -87,14 +85,11 @@ std::string read_input(std::string &input, std::string &input2, int char_reads){
         // Create message
         for(int i = 0; i < matrix.size(); i++){
             for(int j = 0; j < matrix[0].size(); j++){
-                // std::cout << "[ " << (matrix[i][j]) << " : " << number_map[matrix[i][j]] << " ]" << std::endl;
                 std::string str(1,number_map[matrix[i][j]]);
                 message.append(str + " ");
             }
         }
                             
-        // std::cout << "#####################################" << std::endl;
-        
     }
                     
             
@@ -141,13 +136,13 @@ std::vector<int> split_indices(std::regex &rex, std::regex &rex2, int max_splits
                 
             if(next_index == last_index){
                 
-                //Store current & last index
+                // Store current & last index
                 split_indices.push_back(current_index);
                 split_indices.push_back(last_index);
                 
             } else {
                 
-                //Store current index
+                // Store current index
                 split_indices.push_back(current_index);
             }    
                 
@@ -155,7 +150,7 @@ std::vector<int> split_indices(std::regex &rex, std::regex &rex2, int max_splits
         } else if(std::regex_match(str, rex2) && 
             std::regex_match(str2, rex)) {
             
-            //Store next index
+            // Store next index
             split_indices.push_back(next_index);
             
         } 
@@ -166,15 +161,6 @@ std::vector<int> split_indices(std::regex &rex, std::regex &rex2, int max_splits
     if(split_indices.size() != max_splits){
         split_indices.push_back(last_index);
     }
-    
-    // for(int i = 0; i < input.size(); i++){
-    //     std::cout << "index : " << i << " : " << input[i] << std::endl;
-    // }
-    
-    // for(int i = 0; i < split_indices.size(); i++){
-    //     std::cout << "split index: " << split_indices[i] << std::endl;
-    // }
-    
     
     return split_indices;
     
@@ -270,24 +256,12 @@ std::vector<std::vector<std::string> > vectorize(std::string &input){
         input_vector[0][0] = input.substr(start, split_index + 1);        
         input_vector[0][1] = input.substr(split_index + 1);        
         
-        // for(int i = 0; i < input_vector.size(); i++){
-        //     std::cout << "Input Parts: " 
-        //         << input_vector[i][0] << ", "
-        //         << input_vector[i][1] << std::endl;
-        // }
-        
     } else {
                         
         // Swap input parts so that the letter part is first
         // and number part is second in the input vector
         input_vector[0][1] = input.substr(start, split_index);        
         input_vector[0][0] = input.substr(split_index);        
-        
-        // for(int i = 0; i < input_vector.size(); i++){
-        //     std::cout << "Input Parts: " 
-        //         << input_vector[i][0] << ", "
-        //         << input_vector[i][1] << std::endl;
-        // }
                         
     }    
     

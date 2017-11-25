@@ -10,6 +10,7 @@
 #include <pthread.h>
 
 #include "pinnacle.hpp"
+#include "hill.hpp"
 #include "util.hpp"
 
 std::string do_pinn_decipher(std::string &input){
@@ -27,7 +28,7 @@ std::string do_pinn_decipher(std::string &input){
         
     } else {
         
-        return "Invalid input for Pinnacle decipher!";
+        return "Invalid Input Parts For Pinnacle Decipher!";
         
     }
 }
@@ -40,19 +41,19 @@ void* pinnacle_runner(void *arg){
     std::vector<std::vector<std::string>> input_vector = 
         arg_struct->input_vector;
 
-    std::string message;
+    std::string message = "Pinnacle ->\n";
     for(int i = 0; i < input_vector.size(); i++){
         for(int j = 0; j < input_vector[0].size(); j++){
             std::string input = input_vector[i][j];
             if(valid_hill_expr(input)){
-                message.append(do_pinn_decipher(input) + " , ");
+                message.append(do_pinn_decipher(input) + "\n");
+            } else {
+                message.append("Invalid Pinnacle Expression!\n");
             }
         }
     }
     
     arg_struct->final_message = message;
     
-    
-    std::cout << ">>> Pinnacle Function Ended <<<" << std::endl;
     pthread_exit(0);
 }

@@ -51,9 +51,8 @@ void* sifter_runner(void *arg){
         
     } else {
             
-        std::cout << "Invalid Sifter Input!" << std::endl;
-            
+        std::cout << "Input: ( " << new_input << " ) Is Invalid For Sifter!" << std::endl;
+
     }
     
-    std::cout << ">>> Sifter Function Ended <<<" << std::endl;
 }

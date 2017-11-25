@@ -36,23 +36,12 @@ std::vector<std::vector<std::string> > section_vectorize(std::string &input){
     
             std::string input_part(input.substr(start,(end - start) + 1));
             input_vector[0][i/2] = input_part;
-                
-            // std::cout << "Current indx: " << current_index << std::endl;
-            // std::cout << "Next indx: " << next_index << std::endl;
-            // std::cout << "Start: " << start << std::endl;
-            // std::cout << "End: " << end << std::endl;
-            // std::cout << "Length: " << (end - start) + 1 << std::endl;
-            // std::cout << "Input Part: " << i/2 << " : " << input_part << std::endl;
         
         } else {
             
             int start = indices[current_index] + 1; 
             std::string input_part(input.substr(start));
             input_vector[0][(i/2)] = input_part;
-            
-            // std::cout << "Current indx: " << current_index << std::endl;
-            // std::cout << "Start: " << start << std::endl;
-            // std::cout << "Input Part: " << i/2 << " : " << input_part << std::endl;
             
         }
             
@@ -104,9 +93,6 @@ void* sectionize_runner(void *arg){
     
     std::string new_input = arg_struct->input;
     
-    // std::string *new_input_ptr = (std::string*) arg;
-    // std::string new_input = *new_input_ptr;
-    
     std::ostringstream os;
     
     if(valid_asterisks_expr(new_input)){
@@ -135,17 +121,12 @@ void* sectionize_runner(void *arg){
             int result2 = pthread_create(&threads[i], &thread_attrs[i], 
                 thread_runners[i], &struct_args[i]);
             
-            if(result == 0 && result2 == 0){
+            if(result != 0 && result2 != 0){
             
-                os << "Thread " << i << " Attributes Initialized, Created Sucessfully" << std::endl;
-                arg_struct->status = os.str();
-
-            } else {
-                
                 os << "Thread " << i << " Attributes Initialized, Created Unsucessfully" << std::endl;
                 arg_struct->status = os.str();
-                
-            }
+
+            } 
         }
         
         
@@ -153,10 +134,8 @@ void* sectionize_runner(void *arg){
         for(int i = 0; i < NUM_THREADS; i++){
             if(pthread_join(threads[i], NULL) == 0){
                 
-                os << "Thread " << i << " Joined Successfully" << std::endl;
+                os << "Final Message: " << struct_args[i].final_message << std::endl;
                 arg_struct->status = os.str();
-                
-                std::cout << "Final Message: " << struct_args[i].final_message << std::endl;
                 
             } else { 
                 
@@ -167,10 +146,9 @@ void* sectionize_runner(void *arg){
 
     } else {
         
-        os << "Input: ( " << new_input << " ) is invalid for Fence, Hill, & Pinnacle!" << std::endl;
+        os << "Input: ( " << new_input << " ) Is Invalid For Fence, Hill, & Pinnacle!" << std::endl;
         arg_struct->status = os.str();
         
     }
     
-    std::cout << ">>> Sectionize Function Ended <<<" << std::endl;
 }
